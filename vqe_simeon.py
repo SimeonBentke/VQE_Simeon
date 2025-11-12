@@ -62,6 +62,8 @@ class one_qubit_trivial_system(gradiant_clas,step_size_const):
 s=one_qubit_trivial_system()
 s.run()
 
+
+
 plt.plot(s.store_history_theta, 'g')
 plt.plot(s.store_history_energy, 'r')
 plt.show()
