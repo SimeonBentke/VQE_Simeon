@@ -60,6 +60,7 @@ class gradiant_clas(base):
         energy_state_epsilon=self.energy(state_epsilon)
 
         gradient=(energy_state_epsilon-energy_state)/self.epsilon
+        print(gradient)
         return gradient
 
 
@@ -95,7 +96,6 @@ class one_qubit_trivial_system_quantum(gradiant_clas,step_size_const):
         Z=np.array([[1,0],[0,-1]])
         self.H=Operator(-X-Z)
         self.state=Statevector.from_instruction(QuantumCircuit(1))
-        #print(Statevector.from_instruction(self.state))
         self.theta=np.pi/2
     def unitary(self,theta):
         c=np.cos(theta/2)
@@ -110,8 +110,32 @@ class one_qubit_trivial_system_quantum(gradiant_clas,step_size_const):
     def energy(self,state):
         energy=np.vdot(state.data,self.H.data @ state.data)
         return energy
+    
 
-s=one_qubit_trivial_system_quantum()
+class one_dim_ising(gradiant_clas,step_size_const):
+    def __init__(self):
+        super().__init__()
+        X=np.array([[0,1],[1,0]])
+        Z=np.array([[1,0],[0,-1]])
+        self.H=Operator(X)
+        self.state=Statevector.from_instruction(QuantumCircuit(1))
+        #print(Statevector.from_instruction(self.state))
+        self.theta=0
+    def unitary(self,theta):
+        c=np.cos(theta/2)
+        s=np.sin(theta/2)
+        u=np.array([[c,-s],[s,c]])
+        return Operator(u)
+    
+    def state_update(self,theta):
+        u=self.unitary(theta)
+        return self.state.evolve(u,qargs=[0])
+    
+    def energy(self,state):
+        energy=np.vdot(state.data,self.H.data @ state.data)
+        return energy
+
+s=one_dim_ising()
 s.run()
 
 
