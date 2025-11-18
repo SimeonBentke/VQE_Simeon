@@ -30,7 +30,7 @@ class base():
         theta_arr=np.array(self.store_history_theta)
         for i in range(self.theta.size):
             plt.plot(theta_arr[:,i], 'g')
-            #plt.plot(self.store_history_energy, 'r')
+            plt.plot(self.store_history_energy, 'r')
         plt.title('theta(green) and energy(red) evolution')
         plt.show()
 
@@ -183,7 +183,8 @@ class n_dim_ising_triv_ansatz(gradiant_clas,step_size_const):
         self.state=Statevector.from_instruction(QuantumCircuit(self.dim))
         self.theta=np.zeros(self.dim)
         for i in range(self.dim):
-            self.theta[i]=np.pi/self.dim*i
+            #self.theta[i]=0
+            self.theta[i]=np.pi/(self.dim*2)*i
 
     def Ham(self,J,h):
         Hamilton=np.zeros((2**self.dim,2**self.dim))
